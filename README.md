@@ -16,6 +16,8 @@ pip install dbt-snowflake==1.2.0
 dbt
 ```
 
+### VS Code Extension: [dbt Power User](https://marketplace.visualstudio.com/items?itemName=innoverio.vscode-dbt-power-user)
+
 ### Snowflake user creation
 Copy these SQL statements into a Snowflake Worksheet, select all and execute them (i.e. pressing the play button).
 
