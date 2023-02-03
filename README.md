@@ -6,6 +6,16 @@
 - Find [dbt events](https://events.getdbt.com) near you.
 - Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices.
 
+### dbt installation
+
+__Make sure that you are working in the _Desktop/course_ folder and that you have virtualenv activated before installing dbt.__
+
+Here are the commands we executed in this lesson:
+```
+pip install dbt-snowflake==1.2.0
+dbt
+```
+
 ### Snowflake user creation
 Copy these SQL statements into a Snowflake Worksheet, select all and execute them (i.e. pressing the play button).
 
