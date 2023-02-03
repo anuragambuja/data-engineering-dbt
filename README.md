@@ -6,7 +6,7 @@
 - Find [dbt events](https://events.getdbt.com) near you.
 - Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices.
 
-### dbt installation
+> ### dbt installation
 
 __Make sure that you are working in the _Desktop/course_ folder and that you have virtualenv activated before installing dbt.__
 
@@ -16,7 +16,9 @@ pip install dbt-snowflake==1.2.0
 dbt
 ```
 
-### dbt commands
+![image](https://user-images.githubusercontent.com/19702456/216638815-6eefbc27-9312-42c8-9821-806bd91df725.png)
+
+> ### dbt commands
 ```bash
   dbt init <project name>
   dbt debug
@@ -25,9 +27,9 @@ Project configurations: dbt_project.yml
 Profile configurations: ~/.dbt/profiles.yml
 ```
 
-### VS Code Extension: [dbt Power User](https://marketplace.visualstudio.com/items?itemName=innoverio.vscode-dbt-power-user)
+> ### VS Code Extension: [dbt Power User](https://marketplace.visualstudio.com/items?itemName=innoverio.vscode-dbt-power-user)
 
-### Snowflake user creation
+> ### Snowflake user creation
 Copy these SQL statements into a Snowflake Worksheet, select all and execute them (i.e. pressing the play button).
 
 ```sql
@@ -67,7 +69,7 @@ GRANT ALL ON FUTURE TABLES IN SCHEMA AIRBNB.RAW to ROLE transform;
 
 ```
 
-### Snowflake data import
+> ### Snowflake data import
 
 Copy these SQL statements into a Snowflake Worksheet, select all and execute them (i.e. pressing the play button).
 
