@@ -16,6 +16,15 @@ pip install dbt-snowflake==1.2.0
 dbt
 ```
 
+### dbt commands
+```bash
+  dbt init <project name>
+  dbt debug
+
+Project configurations: dbt_project.yml
+Profile configurations: ~/.dbt/profiles.yml
+```
+
 ### VS Code Extension: [dbt Power User](https://marketplace.visualstudio.com/items?itemName=innoverio.vscode-dbt-power-user)
 
 ### Snowflake user creation
