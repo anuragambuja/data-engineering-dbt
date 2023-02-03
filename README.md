@@ -6,6 +6,8 @@
 - Find [dbt events](https://events.getdbt.com) near you.
 - Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices.
 
+![image](https://user-images.githubusercontent.com/19702456/216638815-6eefbc27-9312-42c8-9821-806bd91df725.png)
+
 > ### dbt installation
 
 __Make sure that you are working in the _Desktop/course_ folder and that you have virtualenv activated before installing dbt.__
@@ -16,7 +18,7 @@ pip install dbt-snowflake==1.2.0
 dbt
 ```
 
-![image](https://user-images.githubusercontent.com/19702456/216638815-6eefbc27-9312-42c8-9821-806bd91df725.png)
+
 
 > ### dbt commands
 ```bash
