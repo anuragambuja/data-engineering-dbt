@@ -9,6 +9,16 @@ Models Overview
 - They live in SQL files in the `models` folder
 - Models can reference each other and use templates and macros
 
+> ### dbt installation
+
+__Make sure that you are working in the _Desktop/course_ folder and that you have virtualenv activated before installing dbt.__
+
+Here are the commands we executed in this lesson:
+```
+pip install dbt-snowflake==1.2.0
+dbt
+```
+
 > ### dbt commands
 ```bash
   dbt init <project name>
