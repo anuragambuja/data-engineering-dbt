@@ -1,4 +1,4 @@
-
+## Snowflake Environment Setup and Data Preparation 
 
 > ### Snowflake user creation
 Copy these SQL statements into a Snowflake Worksheet, select all and execute them (i.e. pressing the play button).
