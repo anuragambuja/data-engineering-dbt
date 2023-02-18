@@ -504,14 +504,14 @@ WHERE
 ```
 
 > ### Packages
-The contents of `packages.yml`:
+- `packages.yml`:
 ```yaml
 packages:
   - package: dbt-labs/dbt_utils
     version: 0.8.0
 ```
 
-The contents of ```models/fct_reviews.sql```:
+- ```models/fct_reviews.sql```:
 ```
 {{
   config(
@@ -533,9 +533,9 @@ WHERE review_text is not null
 {% endif %}
 ```
 
-## Documentation
+> ### Documentation
 
-The `models/schema.yml` after adding the documentation:
+- `models/schema.yml`
 ```yaml
 version: 2
 
