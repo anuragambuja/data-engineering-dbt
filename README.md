@@ -23,6 +23,23 @@
 - Timestamp: A unique key and an updated_at field is defined on the source model. These columns are used for determining changes.
 - Check: Any change in a set of columns (or all columns) will be picked up as an update.
 
+:point_right: Tests Overview
+There are two types of tests: singular and generic
+- Singular tests are SQL queries stored in tests which are expected to return an empty resultset
+- There are four built-in generic tests. Keep the schema file in models/schema.yml
+    - unique
+    - not_null
+    - accepted_values
+    - Relationships
+- You can define your own custom generic tests or import tests from dbt packages
+
+:point_right: Macros
+- Macros are jinja templates created in the macros folder
+- There are many built-in macros in DBT
+- You can use macros in model definitions and tests
+- A special macro, called test, can be used for implementing your own generic tests
+- dbt packages can be installed easily to get access to a plethora of macros and tests
+
 :point_right:
 
 
@@ -42,6 +59,7 @@ dbt
   dbt compile 
   dbt source freshness
   dbt snapshot # implements SCD type 2
+  dbt test #  verify if tests are passing
 
 Project configurations: dbt_project.yml
 Profile configurations: ~/.dbt/profiles.yml
