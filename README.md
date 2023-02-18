@@ -43,6 +43,7 @@ dbt
   dbt run --full-refresh
   dbt seed # upload seed
   dbt compile 
+  dbt source freshness
 
 Project configurations: dbt_project.yml
 Profile configurations: ~/.dbt/profiles.yml
