@@ -468,11 +468,9 @@ USING (listing_id)
 WHERE l.created_at >= r.review_date
 ```
 
+> ### Macros
 
-# Marcos, Custom Tests and Packages 
-## Macros
-
-The contents of `macros/no_nulls_in_columns.sql`:
+- `macros/no_nulls_in_columns.sql`
 ```sql
 {% macro no_nulls_in_columns(model) %}
     SELECT * FROM {{ model }} WHERE
@@ -483,13 +481,13 @@ The contents of `macros/no_nulls_in_columns.sql`:
 {% endmacro %}
 ```
 
-The contents of `tests/no_nulls_in_dim_listings.sql`
+- `tests/no_nulls_in_dim_listings.sql`
 ```sql
 {{ no_nulls_in_columns(ref('dim_listings_cleansed')) }}
 ```
 
-## Custom Generic Tests
-The contents of `macros/positive_value.sql`
+> ### Custom Generic Tests
+- `macros/positive_value.sql`
 ```sql
 {% test positive_value(model, column_name) %}
 SELECT
@@ -501,7 +499,11 @@ WHERE
 {% endtest %}
 ```
 
-## Packages
+```sql
+
+```
+
+> ### Packages
 The contents of `packages.yml`:
 ```yaml
 packages:
