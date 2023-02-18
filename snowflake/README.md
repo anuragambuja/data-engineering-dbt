@@ -631,9 +631,27 @@ Here is the schema of our input data:
 {% enddocs %}
 ```
 
-> ### Analyses, Hooks and Exposures
+> ### Analyses
+- `analyses/full_moon_no_sleep.sql`
+```sql
+WITH mart_fullmoon_reviews AS (
+    SELECT * FROM {{ ref('mart_fullmoon_reviews') }}
+)
+SELECT
+    is_full_moon,
+    review_sentiment,
+    COUNT(*) as reviews
+FROM
+    mart_fullmoon_reviews
+GROUP BY
+    is_full_moon,
+    review_sentiment
+ORDER BY
+    is_full_moon,
+    review_sentiment
+```
 
-## Create the REPORTER role and PRESET user in Snowflake
+> ### Snowflake Reporter role and PRESET user creation
 ```sql
 USE ROLE ACCOUNTADMIN;
 CREATE ROLE IF NOT EXISTS REPORTER;
@@ -658,28 +676,14 @@ GRANT SELECT ON FUTURE VIEWS IN SCHEMA AIRBNB.DEV TO ROLE REPORTER;
 
 ```
 
-## Analyses
-The contents of `analyses/full_moon_no_sleep.sql`:
-```sql
-WITH mart_fullmoon_reviews AS (
-    SELECT * FROM {{ ref('mart_fullmoon_reviews') }}
-)
-SELECT
-    is_full_moon,
-    review_sentiment,
-    COUNT(*) as reviews
-FROM
-    mart_fullmoon_reviews
-GROUP BY
-    is_full_moon,
-    review_sentiment
-ORDER BY
-    is_full_moon,
-    review_sentiment
+> ### Post-hook: Add this to your `dbt_project.yml`
+```
++post-hook:
+      - "GRANT SELECT ON {{ this }} TO ROLE REPORTER"
 ```
 
-## Exposures
-The contents of `models/dashboard.yml`:
+> ### Exposures: Creates documentation 
+- `models/dashboard.yml`
 ```yaml
 version: 2
 
@@ -687,26 +691,20 @@ exposures:
   - name: Executive Dashboard
     type: dashboard
     maturity: low
-    url: https://7e942fbd.us2a.app.preset.io:443/r/2
+    url: <PReset.io dashboard URL>
     description: Executive Dashboard about Airbnb listings and hosts
       
 
     depends_on:
       - ref('dim_listings_w_hosts')
-      - ref('mart_fullmoon_reviews')
+      - ref('full_moon_reviews')
 
     owner:
-      name: Zoltan C. Toth
-      email: hello@learndbt.com
+      name: Anurag  
+      email: anurag@email.com
 ```
 
-## Post-hook
-Add this to your `dbt_project.yml`:
 
-```
-+post-hook:
-      - "GRANT SELECT ON {{ this }} TO ROLE REPORTER"
-```
 
 # Debugging Tests and Testing with dbt-expectations
 
