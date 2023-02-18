@@ -265,7 +265,8 @@ dbt run --full-refresh
 ```
 
 
-The contents of `dim/dim_listings_w_hosts.sql`:
+- `models/dim/dim_listings_w_hosts.sql`
+
 ```sql
 WITH
 l AS (
@@ -294,7 +295,7 @@ FROM l
 LEFT JOIN h ON (h.host_id = l.host_id)
 ```
 
-## Dropping the views after ephemeral materialization
+Dropping the views after ephemeral materialization:
 ```sql
 DROP VIEW AIRBNB.DEV.SRC_HOSTS;
 DROP VIEW AIRBNB.DEV.SRC_LISTINGS;
