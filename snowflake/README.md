@@ -103,7 +103,7 @@ COPY INTO raw_hosts (id, name, is_superhost, created_at, updated_at)
 
 ```
 
-> ### Models Creation
+> ### Models
 
 
 - `models/src/src_listings.sql`
@@ -302,6 +302,7 @@ DROP VIEW AIRBNB.DEV.SRC_LISTINGS;
 DROP VIEW AIRBNB.DEV.SRC_REVIEWS;
 ```
 
+> ### Sources and Seeds
 - [Seed File](https://dbtlearn.s3.us-east-2.amazonaws.com/seed_full_moon_dates.csv)
 
 - `models/sources.yml`
@@ -368,6 +369,7 @@ FROM
   ON (TO_DATE(r.review_date) = DATEADD(DAY, 1, fm.full_moon_date))
 ```
 
+> ### Snapshots
 - `snapshots/scd_raw_listings.sql`:
 
 ```sql
@@ -414,10 +416,9 @@ select * FROM {{ source('airbnb', 'hosts') }}
 {% endsnapshot %}
 ```
 
-# Tests
+> ### Tests
 
-## Generic Tests
-The contents of `models/schema.yml`:
+`models/schema.yml`
 
 ```sql
 version: 2
