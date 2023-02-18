@@ -418,7 +418,7 @@ select * FROM {{ source('airbnb', 'hosts') }}
 
 > ### Tests
 
-`models/schema.yml`
+- `models/schema.yml`
 
 ```sql
 version: 2
@@ -448,8 +448,7 @@ models:
                       'Hotel room']
 ```
 
-### Generic test for minimum nights check
-The contents of `tests/dim_listings_minumum_nights.sql`:
+- `tests/dim_listings_minumum_nights.sql`:
 
 ```sql
 SELECT
@@ -461,23 +460,15 @@ LIMIT 10
 
 ```
 
-### Restricting test execution to a model
-```sh
-dbt test --select dim_listings_cleansed
-```
-
-## Exercise
-
-Create a singular test in `tests/consistent_created_at.sql` that checks that there is no review date that is submitted before its listing was created: Make sure that every `review_date` in `fct_reviews` is more recent than the associated `created_at` in `dim_listings_cleansed`.
-
-
-### Solution
+- `tests/consistent_created_at.sql`
 ```sql
 SELECT * FROM {{ ref('dim_listings_cleansed') }} l
 INNER JOIN {{ ref('fct_reviews') }} r
 USING (listing_id)
 WHERE l.created_at >= r.review_date
 ```
+
+
 # Marcos, Custom Tests and Packages 
 ## Macros
 
