@@ -42,6 +42,7 @@ dbt
   dbt debug # run from the project directory 
   dbt run --full-refresh
   dbt seed # upload seed
+  dbt compile 
 
 Project configurations: dbt_project.yml
 Profile configurations: ~/.dbt/profiles.yml
