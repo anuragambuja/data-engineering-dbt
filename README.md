@@ -1,7 +1,7 @@
 ## DBT Overview 
 
-
 ![image](https://user-images.githubusercontent.com/19702456/216638815-6eefbc27-9312-42c8-9821-806bd91df725.png)
+
 
 > ### Models Overview
 - Models are the basic building block of your business logic
@@ -9,15 +9,13 @@
 - They live in SQL files in the `models` folder
 - Models can reference each other and use templates and macros
 
+
 > ### Materializations Overview
-![image](https://user-images.githubusercontent.com/19702456/219865161-6a463385-b8f5-4626-9810-8b95c54de6db.png)
+![image](https://user-images.githubusercontent.com/19702456/219865450-6061d1c7-cff2-4075-b201-dc411f5bee03.png)
 
 
 > ### dbt installation
 
-__Make sure that you are working in the _Desktop/course_ folder and that you have virtualenv activated before installing dbt.__
-
-Here are the commands we executed in this lesson:
 ```
 pip install dbt-snowflake==1.2.0
 dbt
