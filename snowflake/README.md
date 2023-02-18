@@ -302,20 +302,9 @@ DROP VIEW AIRBNB.DEV.SRC_LISTINGS;
 DROP VIEW AIRBNB.DEV.SRC_REVIEWS;
 ```
 
-# Sources and Seeds
+- [Seed File](https://dbtlearn.s3.us-east-2.amazonaws.com/seed_full_moon_dates.csv)
 
-## Full Moon Dates CSV
-Download the CSV from the lesson's _Resources_ section, or download it from the following S3 location:
-https://dbtlearn.s3.us-east-2.amazonaws.com/seed_full_moon_dates.csv
-
-Then place it to the `seeds` folder
-
-If you download from S3 on a Mac/Linux, can you import the csv straight to your seed folder by executing this command:
-```sh
-curl https://dbtlearn.s3.us-east-2.amazonaws.com/seed_full_moon_dates.csv -o seeds/seed_full_moon_dates.csv
-```
-
-## Contents of models/sources.yml
+- `models/sources.yml`
 ```yaml
 version: 2
 
@@ -337,7 +326,7 @@ sources:
           error_after: {count: 24, period: hour}
 ```
 
-## Contents of models/mart/full_moon_reviews.sql
+- `models/mart/full_moon_reviews.sql`
 ```sql
 {{ config(
   materialized = 'table',
@@ -364,10 +353,7 @@ FROM
   ON (TO_DATE(r.review_date) = DATEADD(DAY, 1, fm.full_moon_date))
 ```
 
-# Snapshots
-
-## Snapshots for listing
-The contents of `snapshots/scd_raw_listings.sql`:
+- `snapshots/scd_raw_listings.sql`:
 
 ```sql
 {% snapshot scd_raw_listings %}
@@ -387,7 +373,6 @@ select * FROM {{ source('airbnb', 'listings') }}
 {% endsnapshot %}
 ```
 
-### Updating the table
 ```sql
 UPDATE AIRBNB.RAW.RAW_LISTINGS SET MINIMUM_NIGHTS=30,
     updated_at=CURRENT_TIMESTAMP() WHERE ID=3176;
