@@ -40,7 +40,27 @@ There are two types of tests: singular and generic
 - A special macro, called test, can be used for implementing your own generic tests
 - dbt packages can be installed easily to get access to a plethora of macros and tests
 
-:point_right:
+:point_right: Documentation Overview
+- Documentations can be defined two ways:
+    - In yaml files (like schema.yml)
+    - In standalone markdown files
+- Dbt ships with a lightweight documentation web server
+- For customizing the landing page, a special file, overview.md is used
+- You can add your own assets (like images) to a special project folder 
+
+:point_right: Hooks Overview
+- Hooks are SQLs that are executed at predefined times
+- Hooks can be configured on the project, subfolder, or model level
+- Hook types:
+    - on_run_start: executed at the start of dbt {run, seed, snapshot}
+    - on_run_end: executed at the end of dbt {run, seed, snapshot}
+    - pre-hook: executed before a model/seed/snapshot is built
+    - post-hook: executed after a model/seed/snapshot is built
+
+:point_right: 
+
+
+:point_right: 
 
 
 > ### dbt installation
