@@ -570,17 +570,21 @@ models:
           - positive_value
 
   - name: dim_hosts_cleansed
+    description: Cleansed table for the Airbnb hosts
     columns:
       - name: host_id
+        description: The id of the host. This is the primary key.
         tests:
           - not_null
           - unique
       
       - name: host_name
+        description: The name of the host
         tests:
           - not_null
       
       - name: is_superhost
+        description: Defines whether the hosts is a superhost.
         tests:
           - accepted_values:
               values: ['t', 'f']
@@ -603,7 +607,7 @@ models:
               values: ['positive', 'neutral', 'negative']
 
 ```
-The contents of `models/docs.md`:
+- `models/docs.md`
 ```txt
 {% docs dim_listing_cleansed__minimum_nights %}
 Minimum number of nights required to rent this property. 
@@ -614,7 +618,7 @@ to 0 in the source tables. Our cleansing algorithm updates this to `1`.
 {% enddocs %}
 ```
 
-The contents of `models/overview.md`:
+- `models/overview.md`
 ```md
 {% docs __overview__ %}
 # Airbnb pipeline
@@ -627,7 +631,7 @@ Here is the schema of our input data:
 {% enddocs %}
 ```
 
-# Analyses, Hooks and Exposures
+> ### Analyses, Hooks and Exposures
 
 ## Create the REPORTER role and PRESET user in Snowflake
 ```sql
