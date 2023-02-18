@@ -26,7 +26,7 @@
 :point_right: Tests Overview
 There are two types of tests: singular and generic
 - Singular tests are SQL queries stored in tests which are expected to return an empty resultset
-- There are four built-in generic tests. Keep the schema file in models/schema.yml
+- Generic Tests are pre defined tests which can be added to a yml file. There are four built-in generic tests:
     - unique
     - not_null
     - accepted_values
@@ -59,7 +59,7 @@ dbt
   dbt compile 
   dbt source freshness
   dbt snapshot # implements SCD type 2
-  dbt test #  verify if tests are passing
+  dbt test [--select <test_name>] #  verify if tests are passing
 
 Project configurations: dbt_project.yml
 Profile configurations: ~/.dbt/profiles.yml
