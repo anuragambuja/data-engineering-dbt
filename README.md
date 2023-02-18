@@ -81,7 +81,10 @@ dbt
   dbt snapshot # implements SCD type 2
   dbt test [--select <test_name>] #  verify if tests are passing
   dbt deps  # install dependencies from packages.yml
-
+  
+  dbt docs generate # generate docs files 
+  dbt docs serve # light weight server 
+ 
 Project configurations: dbt_project.yml
 Profile configurations: ~/.dbt/profiles.yml
 ```
