@@ -41,6 +41,7 @@ dbt
   dbt seed # upload seed
   dbt compile 
   dbt source freshness
+  dbt snapshot # implements SCD type 2
 
 Project configurations: dbt_project.yml
 Profile configurations: ~/.dbt/profiles.yml
