@@ -3,15 +3,30 @@
 ![image](https://user-images.githubusercontent.com/19702456/216638815-6eefbc27-9312-42c8-9821-806bd91df725.png)
 
 
-> ### Models Overview
+:point_right: Models Overview
 - Models are the basic building block of your business logic
 - Materialized as tables, views, etc…
 - They live in SQL files in the `models` folder
 - Models can reference each other and use templates and macros
 
 
-> ### Materializations Overview
+:point_right: Materializations Overview
+
 ![image](https://user-images.githubusercontent.com/19702456/219865450-6061d1c7-cff2-4075-b201-dc411f5bee03.png)
+
+:point_right: Sources and Seeds Overview
+- Seeds are local files that you upload to the data warehouse from dbt
+- Sources is an abstraction layer on the top of your input tables
+- Source freshness can be checked automatically
+
+
+:point_right:
+
+
+
+:point_right:
+
+
 
 
 > ### dbt installation
