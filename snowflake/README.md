@@ -325,6 +325,21 @@ sources:
           warn_after: {count: 1, period: hour}
           error_after: {count: 24, period: hour}
 ```
+```sql
+WITH raw_reviews AS (
+    SELECT * FROM {{ source('airbnb', 'reviews') }}
+)
+```
+```sql
+WITH raw_listings AS (
+    SELECT * FROM {{ source('airbnb', 'listings') }}
+)
+```
+```sql
+WITH raw_hosts AS (
+    SELECT * FROM {{ source('airbnb', 'hosts') }}
+)
+```
 
 - `models/mart/full_moon_reviews.sql`
 ```sql
