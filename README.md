@@ -30,9 +30,10 @@ Project configurations: dbt_project.yml
 Profile configurations: ~/.dbt/profiles.yml
 ```
 
-> ### VS Code Extension: [dbt Power User](https://marketplace.visualstudio.com/items?itemName=innoverio.vscode-dbt-power-user)
+> ### VS Code Extension: 
+- [dbt Power User](https://marketplace.visualstudio.com/items?itemName=innoverio.vscode-dbt-power-user)
 
-### References
+> ### References
 
 - Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction).
 - Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers.
