@@ -19,14 +19,11 @@
 - Sources is an abstraction layer on the top of your input tables
 - Source freshness can be checked automatically
 
+:point_right: Snapshots
+- Timestamp: A unique key and an updated_at field is defined on the source model. These columns are used for determining changes.
+- Check: Any change in a set of columns (or all columns) will be picked up as an update.
 
 :point_right:
-
-
-
-:point_right:
-
-
 
 
 > ### dbt installation
