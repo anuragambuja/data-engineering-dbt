@@ -103,12 +103,10 @@ COPY INTO raw_hosts (id, name, is_superhost, created_at, updated_at)
 
 ```
 
+> ### Models Creation
 
-# Models
-## Code used in the lesson
 
-### SRC Listings 
-`models/src/src_listings.sql`:
+`models/src/src_listings.sql`
 
 ```sql
 WITH raw_listings AS (
@@ -132,8 +130,7 @@ FROM
 
 ```
 
-### SRC Reviews
-`models/src/src_reviews.sql`:
+`models/src/src_reviews.sql`
 
 ```sql
 WITH raw_reviews AS (
@@ -152,18 +149,7 @@ FROM
     raw_reviews
 ```
 
-
-## Exercise
-
-Create a model which builds on top of our `raw_hosts` table. 
-
-1) Call the model `models/src/src_hosts.sql`
-2) Use a CTE (common table expression) to define an alias called `raw_hosts`. This CTE select every column from the raw hosts table `AIRBNB.RAW.RAW_HOSTS`
-3) In your final `SELECT`, select every column and record from `raw_hosts` and rename the following columns:
-   * `id` to `host_id`
-   * `name` to `host_name` 
-
-### Solution
+`models/src/src_hosts.sql`
 
 ```sql
 WITH raw_hosts AS (
@@ -182,11 +168,7 @@ FROM
     raw_hosts
 ```
 
-# Models
-## Code used in the lesson
-
-### DIM Listings 
-`models/dim/dim_listings_cleansed.sql`:
+`models/dim/dim_listings_cleansed.sql`
 
 ```sql
 WITH src_listings AS (
@@ -217,8 +199,7 @@ FROM
   src_listings
 ```
 
-### DIM hosts
-`models/dim/dim_hosts_cleansed.sql`:
+`models/dim/dim_hosts_cleansed.sql`
 
 ```sql
 {{
@@ -246,18 +227,7 @@ FROM
     src_hosts
 ```
 
-## Exercise
-
-Create a new model in the `models/dim/` folder called `dim_hosts_cleansed.sql`.
- * Use a CTE to reference the `src_hosts` model
- * SELECT every column and every record, and add a cleansing step to host_name:
-   * If host_name is not null, keep the original value 
-   * If host_name is null, replace it with the value ‘Anonymous’
-   * Use the NVL(column_name, default_null_value) function 
-Execute `dbt run` and verify that your model has been created 
-
-
-### Solution
+`models/dim/dim_hosts_cleansed.sql`
 
 ```sql
 WITH src_hosts AS (
