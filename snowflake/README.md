@@ -395,8 +395,7 @@ UPDATE AIRBNB.RAW.RAW_LISTINGS SET MINIMUM_NIGHTS=30,
 SELECT * FROM AIRBNB.DEV.SCD_RAW_LISTINGS WHERE ID=3176;
 ```
 
-## Snapshots for hosts
-The contents of `snapshots/scd_raw_hosts.sql`:
+- `snapshots/scd_raw_hosts.sql`:
 ```sql
 {% snapshot scd_raw_hosts %}
 
