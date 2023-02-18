@@ -106,7 +106,7 @@ COPY INTO raw_hosts (id, name, is_superhost, created_at, updated_at)
 > ### Models Creation
 
 
-`models/src/src_listings.sql`
+- `models/src/src_listings.sql`
 
 ```sql
 WITH raw_listings AS (
@@ -130,7 +130,7 @@ FROM
 
 ```
 
-`models/src/src_reviews.sql`
+- `models/src/src_reviews.sql`
 
 ```sql
 WITH raw_reviews AS (
@@ -149,7 +149,7 @@ FROM
     raw_reviews
 ```
 
-`models/src/src_hosts.sql`
+- `models/src/src_hosts.sql`
 
 ```sql
 WITH raw_hosts AS (
@@ -168,7 +168,7 @@ FROM
     raw_hosts
 ```
 
-`models/dim/dim_listings_cleansed.sql`
+- `models/dim/dim_listings_cleansed.sql`
 
 ```sql
 WITH src_listings AS (
@@ -199,7 +199,7 @@ FROM
   src_listings
 ```
 
-`models/dim/dim_hosts_cleansed.sql`
+- `models/dim/dim_hosts_cleansed.sql`
 
 ```sql
 {{
@@ -227,30 +227,8 @@ FROM
     src_hosts
 ```
 
-`models/dim/dim_hosts_cleansed.sql`
+- `models/fct/fct_reviews.sql`
 
-```sql
-WITH src_hosts AS (
-    SELECT
-        *
-    FROM
-        {{ ref('src_hosts') }}
-)
-SELECT
-    host_id,
-    NVL(
-        host_name,
-        'Anonymous'
-    ) AS host_name,
-    is_superhost,
-    created_at,
-    updated_at
-FROM
-    src_hosts
-```
-
-## Incremental Models
-The `fct/fct_reviews.sql` model:
 ```sql
 {{
   config(
@@ -285,7 +263,8 @@ Making a full-refresh:
 ```
 dbt run --full-refresh
 ```
-## DIM listings with hosts
+
+
 The contents of `dim/dim_listings_w_hosts.sql`:
 ```sql
 WITH
