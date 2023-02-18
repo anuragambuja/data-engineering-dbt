@@ -1,13 +1,17 @@
-> ### DBT Overview 
+## DBT Overview 
 
 
 ![image](https://user-images.githubusercontent.com/19702456/216638815-6eefbc27-9312-42c8-9821-806bd91df725.png)
 
-Models Overview
+> ### Models Overview
 - Models are the basic building block of your business logic
 - Materialized as tables, views, etc…
 - They live in SQL files in the `models` folder
 - Models can reference each other and use templates and macros
+
+> ### Materializations Overview
+![image](https://user-images.githubusercontent.com/19702456/219865161-6a463385-b8f5-4626-9810-8b95c54de6db.png)
+
 
 > ### dbt installation
 
