@@ -22,7 +22,7 @@ dbt
 > ### dbt commands
 ```bash
   dbt init <project name>
-  dbt debug
+  dbt debug # run from the project directory 
 
 Project configurations: dbt_project.yml
 Profile configurations: ~/.dbt/profiles.yml
