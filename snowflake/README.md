@@ -676,14 +676,13 @@ GRANT SELECT ON FUTURE VIEWS IN SCHEMA AIRBNB.DEV TO ROLE REPORTER;
 
 ```
 
-> ### Post-hook: Add this to your `dbt_project.yml`
+- ### Post-hook: Add this to your `dbt_project.yml`
 ```
 +post-hook:
       - "GRANT SELECT ON {{ this }} TO ROLE REPORTER"
 ```
 
-> ### Exposures: Creates documentation 
-- `models/dashboard.yml`
+- ### Exposures: Creates documentation `models/dashboard.yml`
 ```yaml
 version: 2
 
@@ -691,7 +690,7 @@ exposures:
   - name: Executive Dashboard
     type: dashboard
     maturity: low
-    url: <PReset.io dashboard URL>
+    url: <Preset.io dashboard URL>
     description: Executive Dashboard about Airbnb listings and hosts
       
 
@@ -703,7 +702,6 @@ exposures:
       name: Anurag  
       email: anurag@email.com
 ```
-
 
 
 # Debugging Tests and Testing with dbt-expectations
