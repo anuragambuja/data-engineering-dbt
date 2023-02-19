@@ -704,33 +704,24 @@ exposures:
 ```
 
 
-# Debugging Tests and Testing with dbt-expectations
+> ### Testing with dbt-expectations
 
 * The original Great Expectations project on GitHub: https://github.com/great-expectations/great_expectations
 * dbt-expectations: https://github.com/calogica/dbt-expectations 
 
-For the final code in _packages.yml_, _models/schema.yml_ and _models/sources.yml_, please refer to the course's Github repo:
-https://github.com/nordquant/complete-dbt-bootcamp-zero-to-hero
 
-## Testing a single model
-
+- ### Testing a single model
 ```
 dbt test --select dim_listings_w_hosts
 ```
 
-Testing individual sources:
-
+- ### Testing individual sources:
 ```
 dbt test --select source:airbnb.listings
 ```
 
-## Debugging dbt
-
+- ### Debugging dbt
 ```
 dbt --debug test --select dim_listings_w_hosts
 ```
-
-Keep in mind that in the lecture we didn't use the _--debug_ flag after all as taking a look at the compiled sql file is the better way of debugging tests.
-
-
 
