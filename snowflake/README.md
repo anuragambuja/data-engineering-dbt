@@ -103,12 +103,10 @@ COPY INTO raw_hosts (id, name, is_superhost, created_at, updated_at)
 
 ```
 
+> ### Models
 
-# Models
-## Code used in the lesson
 
-### SRC Listings 
-`models/src/src_listings.sql`:
+- `models/src/src_listings.sql`
 
 ```sql
 WITH raw_listings AS (
@@ -132,8 +130,7 @@ FROM
 
 ```
 
-### SRC Reviews
-`models/src/src_reviews.sql`:
+- `models/src/src_reviews.sql`
 
 ```sql
 WITH raw_reviews AS (
@@ -152,18 +149,7 @@ FROM
     raw_reviews
 ```
 
-
-## Exercise
-
-Create a model which builds on top of our `raw_hosts` table. 
-
-1) Call the model `models/src/src_hosts.sql`
-2) Use a CTE (common table expression) to define an alias called `raw_hosts`. This CTE select every column from the raw hosts table `AIRBNB.RAW.RAW_HOSTS`
-3) In your final `SELECT`, select every column and record from `raw_hosts` and rename the following columns:
-   * `id` to `host_id`
-   * `name` to `host_name` 
-
-### Solution
+- `models/src/src_hosts.sql`
 
 ```sql
 WITH raw_hosts AS (
@@ -182,11 +168,7 @@ FROM
     raw_hosts
 ```
 
-# Models
-## Code used in the lesson
-
-### DIM Listings 
-`models/dim/dim_listings_cleansed.sql`:
+- `models/dim/dim_listings_cleansed.sql`
 
 ```sql
 WITH src_listings AS (
@@ -217,8 +199,7 @@ FROM
   src_listings
 ```
 
-### DIM hosts
-`models/dim/dim_hosts_cleansed.sql`:
+- `models/dim/dim_hosts_cleansed.sql`
 
 ```sql
 {{
@@ -246,41 +227,8 @@ FROM
     src_hosts
 ```
 
-## Exercise
+- `models/fct/fct_reviews.sql`
 
-Create a new model in the `models/dim/` folder called `dim_hosts_cleansed.sql`.
- * Use a CTE to reference the `src_hosts` model
- * SELECT every column and every record, and add a cleansing step to host_name:
-   * If host_name is not null, keep the original value 
-   * If host_name is null, replace it with the value ‘Anonymous’
-   * Use the NVL(column_name, default_null_value) function 
-Execute `dbt run` and verify that your model has been created 
-
-
-### Solution
-
-```sql
-WITH src_hosts AS (
-    SELECT
-        *
-    FROM
-        {{ ref('src_hosts') }}
-)
-SELECT
-    host_id,
-    NVL(
-        host_name,
-        'Anonymous'
-    ) AS host_name,
-    is_superhost,
-    created_at,
-    updated_at
-FROM
-    src_hosts
-```
-
-## Incremental Models
-The `fct/fct_reviews.sql` model:
 ```sql
 {{
   config(
@@ -315,8 +263,10 @@ Making a full-refresh:
 ```
 dbt run --full-refresh
 ```
-## DIM listings with hosts
-The contents of `dim/dim_listings_w_hosts.sql`:
+
+
+- `models/dim/dim_listings_w_hosts.sql`
+
 ```sql
 WITH
 l AS (
@@ -345,27 +295,17 @@ FROM l
 LEFT JOIN h ON (h.host_id = l.host_id)
 ```
 
-## Dropping the views after ephemeral materialization
+Dropping the views after ephemeral materialization:
 ```sql
 DROP VIEW AIRBNB.DEV.SRC_HOSTS;
 DROP VIEW AIRBNB.DEV.SRC_LISTINGS;
 DROP VIEW AIRBNB.DEV.SRC_REVIEWS;
 ```
 
-# Sources and Seeds
+> ### Sources and Seeds
+- [Seed File](https://dbtlearn.s3.us-east-2.amazonaws.com/seed_full_moon_dates.csv)
 
-## Full Moon Dates CSV
-Download the CSV from the lesson's _Resources_ section, or download it from the following S3 location:
-https://dbtlearn.s3.us-east-2.amazonaws.com/seed_full_moon_dates.csv
-
-Then place it to the `seeds` folder
-
-If you download from S3 on a Mac/Linux, can you import the csv straight to your seed folder by executing this command:
-```sh
-curl https://dbtlearn.s3.us-east-2.amazonaws.com/seed_full_moon_dates.csv -o seeds/seed_full_moon_dates.csv
-```
-
-## Contents of models/sources.yml
+- `models/sources.yml`
 ```yaml
 version: 2
 
@@ -386,8 +326,23 @@ sources:
           warn_after: {count: 1, period: hour}
           error_after: {count: 24, period: hour}
 ```
+```sql
+WITH raw_reviews AS (
+    SELECT * FROM {{ source('airbnb', 'reviews') }}
+)
+```
+```sql
+WITH raw_listings AS (
+    SELECT * FROM {{ source('airbnb', 'listings') }}
+)
+```
+```sql
+WITH raw_hosts AS (
+    SELECT * FROM {{ source('airbnb', 'hosts') }}
+)
+```
 
-## Contents of models/mart/full_moon_reviews.sql
+- `models/mart/full_moon_reviews.sql`
 ```sql
 {{ config(
   materialized = 'table',
@@ -414,10 +369,8 @@ FROM
   ON (TO_DATE(r.review_date) = DATEADD(DAY, 1, fm.full_moon_date))
 ```
 
-# Snapshots
-
-## Snapshots for listing
-The contents of `snapshots/scd_raw_listings.sql`:
+> ### Snapshots
+- `snapshots/scd_raw_listings.sql`:
 
 ```sql
 {% snapshot scd_raw_listings %}
@@ -437,7 +390,6 @@ select * FROM {{ source('airbnb', 'listings') }}
 {% endsnapshot %}
 ```
 
-### Updating the table
 ```sql
 UPDATE AIRBNB.RAW.RAW_LISTINGS SET MINIMUM_NIGHTS=30,
     updated_at=CURRENT_TIMESTAMP() WHERE ID=3176;
@@ -445,8 +397,7 @@ UPDATE AIRBNB.RAW.RAW_LISTINGS SET MINIMUM_NIGHTS=30,
 SELECT * FROM AIRBNB.DEV.SCD_RAW_LISTINGS WHERE ID=3176;
 ```
 
-## Snapshots for hosts
-The contents of `snapshots/scd_raw_hosts.sql`:
+- `snapshots/scd_raw_hosts.sql`:
 ```sql
 {% snapshot scd_raw_hosts %}
 
@@ -465,10 +416,9 @@ select * FROM {{ source('airbnb', 'hosts') }}
 {% endsnapshot %}
 ```
 
-# Tests
+> ### Tests
 
-## Generic Tests
-The contents of `models/schema.yml`:
+- `models/schema.yml`
 
 ```sql
 version: 2
@@ -498,8 +448,7 @@ models:
                       'Hotel room']
 ```
 
-### Generic test for minimum nights check
-The contents of `tests/dim_listings_minumum_nights.sql`:
+- `tests/dim_listings_minumum_nights.sql`:
 
 ```sql
 SELECT
@@ -511,27 +460,17 @@ LIMIT 10
 
 ```
 
-### Restricting test execution to a model
-```sh
-dbt test --select dim_listings_cleansed
-```
-
-## Exercise
-
-Create a singular test in `tests/consistent_created_at.sql` that checks that there is no review date that is submitted before its listing was created: Make sure that every `review_date` in `fct_reviews` is more recent than the associated `created_at` in `dim_listings_cleansed`.
-
-
-### Solution
+- `tests/consistent_created_at.sql`
 ```sql
 SELECT * FROM {{ ref('dim_listings_cleansed') }} l
 INNER JOIN {{ ref('fct_reviews') }} r
 USING (listing_id)
 WHERE l.created_at >= r.review_date
 ```
-# Marcos, Custom Tests and Packages 
-## Macros
 
-The contents of `macros/no_nulls_in_columns.sql`:
+> ### Macros
+
+- `macros/no_nulls_in_columns.sql`
 ```sql
 {% macro no_nulls_in_columns(model) %}
     SELECT * FROM {{ model }} WHERE
@@ -542,13 +481,13 @@ The contents of `macros/no_nulls_in_columns.sql`:
 {% endmacro %}
 ```
 
-The contents of `tests/no_nulls_in_dim_listings.sql`
+- `tests/no_nulls_in_dim_listings.sql`
 ```sql
 {{ no_nulls_in_columns(ref('dim_listings_cleansed')) }}
 ```
 
-## Custom Generic Tests
-The contents of `macros/positive_value.sql`
+> ### Custom Generic Tests
+- `macros/positive_value.sql`
 ```sql
 {% test positive_value(model, column_name) %}
 SELECT
@@ -560,15 +499,19 @@ WHERE
 {% endtest %}
 ```
 
-## Packages
-The contents of `packages.yml`:
+```sql
+
+```
+
+> ### Packages
+- `packages.yml`:
 ```yaml
 packages:
   - package: dbt-labs/dbt_utils
     version: 0.8.0
 ```
 
-The contents of ```models/fct_reviews.sql```:
+- ```models/fct_reviews.sql```:
 ```
 {{
   config(
@@ -590,9 +533,9 @@ WHERE review_text is not null
 {% endif %}
 ```
 
-## Documentation
+> ### Documentation
 
-The `models/schema.yml` after adding the documentation:
+- `models/schema.yml`
 ```yaml
 version: 2
 
@@ -627,17 +570,21 @@ models:
           - positive_value
 
   - name: dim_hosts_cleansed
+    description: Cleansed table for the Airbnb hosts
     columns:
       - name: host_id
+        description: The id of the host. This is the primary key.
         tests:
           - not_null
           - unique
       
       - name: host_name
+        description: The name of the host
         tests:
           - not_null
       
       - name: is_superhost
+        description: Defines whether the hosts is a superhost.
         tests:
           - accepted_values:
               values: ['t', 'f']
@@ -660,7 +607,7 @@ models:
               values: ['positive', 'neutral', 'negative']
 
 ```
-The contents of `models/docs.md`:
+- `models/docs.md`
 ```txt
 {% docs dim_listing_cleansed__minimum_nights %}
 Minimum number of nights required to rent this property. 
@@ -671,7 +618,7 @@ to 0 in the source tables. Our cleansing algorithm updates this to `1`.
 {% enddocs %}
 ```
 
-The contents of `models/overview.md`:
+- `models/overview.md`
 ```md
 {% docs __overview__ %}
 # Airbnb pipeline
@@ -684,9 +631,27 @@ Here is the schema of our input data:
 {% enddocs %}
 ```
 
-# Analyses, Hooks and Exposures
+> ### Analyses
+- `analyses/full_moon_no_sleep.sql`
+```sql
+WITH mart_fullmoon_reviews AS (
+    SELECT * FROM {{ ref('mart_fullmoon_reviews') }}
+)
+SELECT
+    is_full_moon,
+    review_sentiment,
+    COUNT(*) as reviews
+FROM
+    mart_fullmoon_reviews
+GROUP BY
+    is_full_moon,
+    review_sentiment
+ORDER BY
+    is_full_moon,
+    review_sentiment
+```
 
-## Create the REPORTER role and PRESET user in Snowflake
+> ### Snowflake Reporter role and PRESET user creation
 ```sql
 USE ROLE ACCOUNTADMIN;
 CREATE ROLE IF NOT EXISTS REPORTER;
@@ -711,28 +676,13 @@ GRANT SELECT ON FUTURE VIEWS IN SCHEMA AIRBNB.DEV TO ROLE REPORTER;
 
 ```
 
-## Analyses
-The contents of `analyses/full_moon_no_sleep.sql`:
-```sql
-WITH mart_fullmoon_reviews AS (
-    SELECT * FROM {{ ref('mart_fullmoon_reviews') }}
-)
-SELECT
-    is_full_moon,
-    review_sentiment,
-    COUNT(*) as reviews
-FROM
-    mart_fullmoon_reviews
-GROUP BY
-    is_full_moon,
-    review_sentiment
-ORDER BY
-    is_full_moon,
-    review_sentiment
+- ### Post-hook: Add this to your `dbt_project.yml`
+```
++post-hook:
+      - "GRANT SELECT ON {{ this }} TO ROLE REPORTER"
 ```
 
-## Exposures
-The contents of `models/dashboard.yml`:
+- ### Exposures: Creates documentation `models/dashboard.yml`
 ```yaml
 version: 2
 
@@ -740,54 +690,37 @@ exposures:
   - name: Executive Dashboard
     type: dashboard
     maturity: low
-    url: https://7e942fbd.us2a.app.preset.io:443/r/2
+    url: <Preset.io dashboard URL>
     description: Executive Dashboard about Airbnb listings and hosts
       
 
     depends_on:
       - ref('dim_listings_w_hosts')
-      - ref('mart_fullmoon_reviews')
+      - ref('full_moon_reviews')
 
     owner:
-      name: Zoltan C. Toth
-      email: hello@learndbt.com
+      name: Anurag  
+      email: anurag@email.com
 ```
 
-## Post-hook
-Add this to your `dbt_project.yml`:
 
-```
-+post-hook:
-      - "GRANT SELECT ON {{ this }} TO ROLE REPORTER"
-```
-
-# Debugging Tests and Testing with dbt-expectations
+> ### Testing with dbt-expectations
 
 * The original Great Expectations project on GitHub: https://github.com/great-expectations/great_expectations
 * dbt-expectations: https://github.com/calogica/dbt-expectations 
 
-For the final code in _packages.yml_, _models/schema.yml_ and _models/sources.yml_, please refer to the course's Github repo:
-https://github.com/nordquant/complete-dbt-bootcamp-zero-to-hero
 
-## Testing a single model
-
+- ### Testing a single model
 ```
 dbt test --select dim_listings_w_hosts
 ```
 
-Testing individual sources:
-
+- ### Testing individual sources:
 ```
 dbt test --select source:airbnb.listings
 ```
 
-## Debugging dbt
-
+- ### Debugging dbt
 ```
 dbt --debug test --select dim_listings_w_hosts
 ```
-
-Keep in mind that in the lecture we didn't use the _--debug_ flag after all as taking a look at the compiled sql file is the better way of debugging tests.
-
-
-

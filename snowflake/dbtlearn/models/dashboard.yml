@@ -1,0 +1,17 @@
+version: 2
+
+exposures:
+  - name: Executive Dashboard
+    type: dashboard
+    maturity: low
+    url: https://416c64e0.us1a.app.preset.io/superset/dashboard/p/jvwMPbdqV3n/
+    description: Executive Dashboard about Airbnb listings and hosts
+      
+
+    depends_on:
+      - ref('dim_listings_w_hosts')
+      - ref('full_moon_reviews')
+
+    owner:
+      name: Anurag  
+      email: anurag.ambuja@gmail.com
