@@ -220,6 +220,19 @@ where vendorid is not null
 - For customizing the landing page, a special file, overview.md is used
 - You can add your own assets (like images) to a special project folder 
 
+The dbt generated docs will include the following:
+* Information about the project:
+    * Model code (both from the .sql files and compiled code)
+    * Model dependencies
+    * Sources
+    * Auto generated DAGs from the `ref()` and `source()` macros
+    * Descriptions from the .yml files and tests
+* Information about the Data Warehouse (`information_schema`):
+    * Column names and data types
+    * Table stats like size and rows
+
+dbt docs can be generated on the cloud or locally with `dbt docs generate`, and can be hosted in dbt Cloud as well or on any other webserver with `dbt docs serve`.
+
 :point_right: Hooks Overview
 - Hooks are SQLs that are executed at predefined times
 - Hooks can be configured on the project, subfolder, or model level
@@ -290,7 +303,7 @@ dbt
   dbt init <project name>
   dbt debug # run from the project directory 
   dbt run --full-refresh
-  dbt seed # upload seed
+  dbt seed [-s filename] # upload seed
   dbt compile 
   dbt source freshness
   dbt snapshot # implements SCD type 2
