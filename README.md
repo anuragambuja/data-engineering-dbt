@@ -49,6 +49,17 @@ with customers as (
 )
 ```
 
+`Model Naming Conventions`
+- Sources: The raw data that has already been loaded
+- Staging: Clean and standarize the data, one to one with source tables. light transformation like renaming columns
+- Intermediate: models between staging and final models, always built on staging models
+- Fact: things that are occurring or have ocurred like events, clicks, votes
+- Dimention: people, place, or thing, users, companies, customers
+
+![image](https://user-images.githubusercontent.com/19702456/221659290-f5dd8eee-355f-479c-b6cc-88bb2cc5c95e.png)
+
+*Note: You will see logs and target if after you run dbt run for the first time. You will not see dbt_modules if you have not imported a package yet
+
 > ## Materializations
 
  * The `table` strategy means that the model will be rebuilt as a table on each run.
@@ -66,7 +77,7 @@ with customers as (
 - Sources is an abstraction layer on the top of your input tables
 - Source freshness can be checked automatically
 
-* ***Sources***: The data loaded within our Data Warehouse.
+* ***Sources***: The raw data already loaded within our Data Warehouse.
     * We can access this data with the `source()` function.
     * The `sources` key in our YAML file contains the details of the databases that the `source()` function can access and translate into proper SQL-valid names.
         * Additionally, we can define "source freshness" to each source so that we can check whether a source is "fresh" or "stale", which can be useful to check whether our data pipelines are working properly.
