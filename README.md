@@ -41,9 +41,14 @@ Here's an example dbt model:
     config(materialized='table')
 }}
 
-SELECT *
-FROM staging.source_table
-WHERE record_state = 'ACTIVE'
+with customers as (
+
+    select
+        id as customer_id
+        ...
+
+)
+
 ```
 
 > ## Materializations
