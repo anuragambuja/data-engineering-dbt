@@ -21,9 +21,7 @@ dbt has 2 main components: _dbt Core_ and _dbt Cloud_:
     * Intregrated documentation.
     * Free for individuals (one developer seat).
 
->  Models Overview
-
-:point_right: Models Overview
+> ##  Models
 
 - Models are the basic building block of your business logic
 - Materialized as tables, views, etc…
@@ -41,7 +39,8 @@ FROM staging.source_table
 WHERE record_state = 'ACTIVE'
 ```
 
-:point_right: Materializations Overview
+> ## Materializations
+
  * The `table` strategy means that the model will be rebuilt as a table on each run.
  * We could use a `view` strategy instead, which would rebuild the model on each run as a SQL view.
  * The `incremental` strategy is essentially a `table` strategy but it allows us to add or update records incrementally rather than rebuilding the complete table on each run.
@@ -50,7 +49,9 @@ WHERE record_state = 'ACTIVE'
 
 ![image](https://user-images.githubusercontent.com/19702456/219865450-6061d1c7-cff2-4075-b201-dc411f5bee03.png)
 
-:point_right: Sources and Seeds Overview
+> ## Sources and Seeds Overview
+
+- The FROM clause within a SELECT statement defines the sources of the data to be used.
 - Seeds are local files that you upload to the data warehouse from dbt
 - Sources is an abstraction layer on the top of your input tables
 - Source freshness can be checked automatically
@@ -127,7 +128,7 @@ WITH green_data AS (
 
 The advantage of having the properties in a separate file is that we can easily modify the schema.yml file to change the database details and write to different databases without having to modify our sgt_green_tripdata.sql file.
 
-:point_right: Snapshots
+> ## Snapshots
 - Timestamp: A unique key and an updated_at field is defined on the source model. These columns are used for determining changes.
 - Check: Any change in a set of columns (or all columns) will be picked up as an update.
 
@@ -141,7 +142,7 @@ There are two types of tests: singular and generic
     - Relationships
 - You can define your own custom generic tests or import tests from dbt packages
 
-:point_right: Macros
+> ## Macros
 - Macros are jinja templates created in the macros folder
 - There are many built-in macros in DBT
 - You can use macros in model definitions and tests
@@ -215,7 +216,7 @@ where vendorid is not null
 ```
 * The macro is replaced by the code contained within the macro definition as well as any variables that we may have passed to the macro parameters.
 
-:point_right: Documentation Overview
+> ## Documentation Overview
 - Documentations can be defined two ways:
     - In yaml files (like schema.yml)
     - In standalone markdown files
@@ -236,7 +237,7 @@ The dbt generated docs will include the following:
 
 dbt docs can be generated on the cloud or locally with `dbt docs generate`, and can be hosted in dbt Cloud as well or on any other webserver with `dbt docs serve`.
 
-:point_right: Hooks Overview
+> ### Hooks Overview
 - Hooks are SQLs that are executed at predefined times
 - Hooks can be configured on the project, subfolder, or model level
 - Hook types:
@@ -245,7 +246,7 @@ dbt docs can be generated on the cloud or locally with `dbt docs generate`, and 
     - pre-hook: executed before a model/seed/snapshot is built
     - post-hook: executed after a model/seed/snapshot is built
 
-:point_right: Packages
+> ## Packages
 
 Macros can be exported to ***packages***, similarly to how classes and functions can be exported to libraries in other languages. Packages contain standalone dbt projects with models and macros that tackle a specific problem area.
 
@@ -268,7 +269,7 @@ select
     -- ...
 ```
 
-:point_right: Variables
+> ## Variables
 
 Like most other programming languages, ***variables*** can be defined and used across our project.
 
@@ -295,14 +296,14 @@ Variables can be used with the `var()` macro. For example:
 * Since we passed the value `false` when runnning `dbt build`, then the `if` statement would evaluate to `false` and the code within would not run.
 
 
-> ### dbt installation
+> ## dbt installation
 
 ```
 pip install dbt-snowflake==1.2.0
 dbt
 ```
 
-> ### dbt commands
+> ## dbt commands
 ```bash
   dbt init <project name>
   dbt debug # run from the project directory 
@@ -321,10 +322,10 @@ Project configurations: dbt_project.yml
 Profile configurations: ~/.dbt/profiles.yml
 ```
 
-> ### VS Code Extension: 
+> ## VS Code Extension: 
 - [dbt Power User](https://marketplace.visualstudio.com/items?itemName=innoverio.vscode-dbt-power-user)
 
-> ### References
+> ## References
 
 - Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction).
 - Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers.
