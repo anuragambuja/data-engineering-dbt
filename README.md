@@ -1,4 +1,4 @@
-## DBT Overview 
+## DBT (data built tool) Overview 
 
 dbt stands for data build tool. It's a transformation tool: it allows us to transform process raw data in our Data Warehouse to transformed data which can be later used by Business Intelligence tools and any other data consumers.
 
@@ -21,7 +21,10 @@ dbt has 2 main components: _dbt Core_ and _dbt Cloud_:
     * Intregrated documentation.
     * Free for individuals (one developer seat).
 
+>  Models Overview
+
 :point_right: Models Overview
+
 - Models are the basic building block of your business logic
 - Materialized as tables, views, etc…
 - They live in SQL files in the `models` folder
@@ -40,10 +43,10 @@ WHERE record_state = 'ACTIVE'
 
 :point_right: Materializations Overview
  * The `table` strategy means that the model will be rebuilt as a table on each run.
-    * We could use a `view` strategy instead, which would rebuild the model on each run as a SQL view.
-    * The `incremental` strategy is essentially a `table` strategy but it allows us to add or update records incrementally rather than rebuilding the complete table on each run.
-    * The `ephemeral` strategy creates a _[Common Table Expression](https://www.essentialsql.com/introduction-common-table-expressions-ctes/)_ (CTE).
-    * You can learn more about materialization strategies with dbt [in this link](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/materializations). Besides the 4 common `table`, `view`, `incremental` and `ephemeral` strategies, custom strategies can be defined for advanced cases.
+ * We could use a `view` strategy instead, which would rebuild the model on each run as a SQL view.
+ * The `incremental` strategy is essentially a `table` strategy but it allows us to add or update records incrementally rather than rebuilding the complete table on each run.
+ * The `ephemeral` strategy creates a _[Common Table Expression](https://www.essentialsql.com/introduction-common-table-expressions-ctes/)_ (CTE).
+ * You can learn more about materialization strategies with dbt [in this link](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/materializations). Besides the 4 common `table`, `view`, `incremental` and `ephemeral` strategies, custom strategies can be defined for advanced cases.
 
 ![image](https://user-images.githubusercontent.com/19702456/219865450-6061d1c7-cff2-4075-b201-dc411f5bee03.png)
 
@@ -266,6 +269,7 @@ select
 ```
 
 :point_right: Variables
+
 Like most other programming languages, ***variables*** can be defined and used across our project.
 
 Variables can be defined in 2 different ways:
