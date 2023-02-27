@@ -352,6 +352,11 @@ In dbt Core, environments are defined in the `profiles.yml` file. Assuming you'v
 
 > ## Visualization
 
+Google Data Studio
+
+Metabase
+
+Preset
 
 > ## dbt commands
 ```bash
