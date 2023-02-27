@@ -1,4 +1,4 @@
-## DBT (data built tool) Overview 
+# What is dbt (Data Built Tool) ?
 
 dbt stands for data build tool. It's a transformation tool: it allows us to transform process raw data in our Data Warehouse to transformed data which can be later used by Business Intelligence tools and any other data consumers.
 
@@ -20,6 +20,13 @@ dbt has 2 main components: _dbt Core_ and _dbt Cloud_:
     * Logging and alerting.
     * Intregrated documentation.
     * Free for individuals (one developer seat).
+
+> ## dbt installation
+
+```
+pip install dbt-snowflake==1.2.0
+dbt
+```
 
 > ##  Models
 
@@ -49,7 +56,7 @@ WHERE record_state = 'ACTIVE'
 
 ![image](https://user-images.githubusercontent.com/19702456/219865450-6061d1c7-cff2-4075-b201-dc411f5bee03.png)
 
-> ## Sources and Seeds Overview
+> ## Sources and Seeds
 
 - The FROM clause within a SELECT statement defines the sources of the data to be used.
 - Seeds are local files that you upload to the data warehouse from dbt
@@ -132,7 +139,7 @@ The advantage of having the properties in a separate file is that we can easily 
 - Timestamp: A unique key and an updated_at field is defined on the source model. These columns are used for determining changes.
 - Check: Any change in a set of columns (or all columns) will be picked up as an update.
 
-:point_right: Tests Overview
+> ## Tests
 There are two types of tests: singular and generic
 - Singular tests are SQL queries stored in tests which are expected to return an empty resultset
 - Generic Tests are pre defined tests which can be added to a yml file. There are four built-in generic tests:
@@ -141,6 +148,21 @@ There are two types of tests: singular and generic
     - accepted_values
     - Relationships
 - You can define your own custom generic tests or import tests from dbt packages
+
+```yaml
+models:
+  - name: stg_yellow_tripdata
+    description: >
+        Trips made by New York City's iconic yellow taxis. 
+    columns:
+        - name: tripid
+        description: Primary key for this table, generated with a concatenation of vendorid+pickup_datetime
+        tests:
+            - unique:
+                severity: warn
+            - not_null:
+                severrity: warn
+```
 
 > ## Macros
 - Macros are jinja templates created in the macros folder
@@ -216,7 +238,7 @@ where vendorid is not null
 ```
 * The macro is replaced by the code contained within the macro definition as well as any variables that we may have passed to the macro parameters.
 
-> ## Documentation Overview
+> ## Documentation
 - Documentations can be defined two ways:
     - In yaml files (like schema.yml)
     - In standalone markdown files
@@ -237,7 +259,7 @@ The dbt generated docs will include the following:
 
 dbt docs can be generated on the cloud or locally with `dbt docs generate`, and can be hosted in dbt Cloud as well or on any other webserver with `dbt docs serve`.
 
-> ### Hooks Overview
+> ## Hooks
 - Hooks are SQLs that are executed at predefined times
 - Hooks can be configured on the project, subfolder, or model level
 - Hook types:
@@ -296,12 +318,40 @@ Variables can be used with the `var()` macro. For example:
 * Since we passed the value `false` when runnning `dbt build`, then the `if` statement would evaluate to `false` and the code within would not run.
 
 
-> ## dbt installation
+> ## Deployment
 
-```
-pip install dbt-snowflake==1.2.0
-dbt
-```
+dbt projects are usually deployed in the form of ***jobs***:
+* A ***job*** is a collection of _commands_ such as `build` or `test`. A job may contain one or more commands.
+* Jobs can be triggered manually or on schedule.
+    * dbt Cloud has a scheduler which can run jobs for us, but other tools such as Airflow or cron can be used as well.
+* Each job will keep a log of the runs over time, and each run will keep the logs for each command.
+* A job may also be used to generate documentation, which may be viewed under the run information.
+* If the `dbt source freshness` command was run, the results can also be viewed at the end of a job.
+
+In dbt Cloud, you might have noticed that after the first commit, the `main` branch becomes read-only and forces us to create a new branch if we want to keep developing. dbt Cloud does this to enforce us to open PRs for CI purposes rather than allowing merging to `main` straight away.
+
+In order to properly establish a deployment workflow, we must define ***environments*** within dbt Cloud. In the sidebar, under _Environments_, you will see that a default _Development_ environment is already generated, which is the one we've been using so far.
+
+We will create a new _Production_ environment of type _Deployment_ using the latest stable dbt version (`v1.0` at the time of writing these notes). By default, the environment will use the `main` branch of the repo but you may change it for more complex workflows. If you used the JSON credentials when setting up dbt Cloud then most of the deployment credentials should already be set up except for the dataset. For this example, we will use the `production` dataset (make sure that the `production` dataset/schema exists in your BigQuery project).
+
+The dbt Cloud scheduler is available in the _Jobs_ menu in the sidebar. We will create a new job with name `dbt build` using the _Production_ environment, we will check the _Generate docs?_ checkbox. Add the following commands:
+
+1. `dbt seed`
+1. `dbt run`
+1. `dbt test`
+
+In the _Schedule_ tab at the bottom we will check the _Run on schedule?_ checkbox with a timing of _Every day_ and _every 6 hours_. Save the job. You will be shown the job's run history screen which contains a _Run now_ buttom that allows us to trigger the job manually; do so to check that the job runs successfully.
+
+You can access the run and check the current state of it as well as the logs. After the run is finished, you will see a _View Documentation_ button at the top; clicking on it will open a new browser window/tab with the generated docs.
+
+Under _Account settings_ > _Projects_, you may edit the project in order to modify the _Documentation_ field under _Artifacts_; you should see a drop down menu which should contain the job we created which generates the docs. After saving the changes and reloading the dbt Cloud website, you should now have a _Documentation_ section in the sidebar.
+
+#### Deployment using dbt Core (local)
+
+In dbt Core, environments are defined in the `profiles.yml` file. Assuming you've defined a ***target*** (an environment) called `prod`, you may build your project agains it using the `dbt build -t prod` command.
+
+> ## Visualization
+
 
 > ## dbt commands
 ```bash
