@@ -83,6 +83,9 @@ models:
 
 `ref` 
 
+- The ref function allows us to build dependencies between models in a flexible way that can be shared in a common code base. The ref function compiles to the name of the database object as it has been created on the most recent execution of dbt run in the particular development environment. Example: _{{ ref('stg_customers') }}_ compiles to _analytics.dbt_anurag.stg_customers_.
+- The ref function also builds a lineage graph. dbt is able to determine dependencies between models and takes those into account to build models in the correct order.
+
 The `ref()` function references underlying tables and views in the Data Warehouse. When compiled, it will automatically build the dependencies and resolve the correct schema fo us. So, if BigQuery contains a schema/dataset called `dbt_dev` inside the `my_project` database which we're using for development and it contains a table called `stg_green_tripdata`, then the following code...
 
 ```sql
