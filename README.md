@@ -327,9 +327,63 @@ where vendorid is not null
 - Documentations can be defined two ways:
     - In yaml files (like schema.yml)
     - In standalone markdown files
+- For models, descriptions can happen at the model, source, or column level.
+- If a longer form, more styled version of text would provide a strong description, doc blocks can be used to render markdown in the generated documentation.
 - Dbt ships with a lightweight documentation web server
-- For customizing the landing page, a special file, overview.md is used
+- For customizing the landing page, a special file, `overview.md` is used
 - You can add your own assets (like images) to a special project folder 
+
+```yml
+models:
+  - name: stg_customers
+    description: Staged customer data from our jaffle shop app.
+    columns: 
+      - name: customer_id
+        description: The primary key for customers.
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_orders
+    description: Staged order data from our jaffle shop app.
+    columns: 
+      - name: order_id
+        description: Primary key for orders.
+        tests:
+          - unique
+          - not_null
+      - name: status
+        description: "{{ doc('order_status') }}"
+        tests:
+          - accepted_values:
+              values:
+                - completed
+                - shipped
+                - returned
+                - placed
+                - return_pending
+      - name: customer_id
+        description: Foreign key to stg_customers.customer_id.
+        tests:
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+```
+```
+{% docs order_status %}
+	
+One of the following values: 
+
+| status         | definition                                       |
+|----------------|--------------------------------------------------|
+| placed         | Order placed, not yet shipped                    |
+| shipped        | Order has been shipped, not yet been delivered   |
+| completed      | Order has been received by customers             |
+| return pending | Customer indicated they want to return this item |
+| returned       | Item has been returned                           |
+
+{% enddocs %}
+```
 
 The dbt generated docs will include the following:
 * Information about the project:
@@ -404,6 +458,8 @@ Variables can be used with the `var()` macro. For example:
 
 
 > ## Deployment
+
+Deployment in dbt (or running dbt in production) is the process of running dbt on a schedule in a deployment environment. The deployment environment will typically run from the default branch (i.e., main, master) and use a dedicated deployment schema (e.g., dbt_prod). The models built in deployment are then used to power dashboards, reporting, and other key business decision-making processes.
 
 dbt projects are usually deployed in the form of ***jobs***:
 * A ***job*** is a collection of _commands_ such as `build` or `test`. A job may contain one or more commands.
