@@ -52,11 +52,11 @@ with customers as (
 ```
 
 `Model Naming Conventions`
-- Sources: The raw data that has already been loaded
-- Staging: Clean and standarize the data, one to one with source tables. light transformation like renaming columns
-- Intermediate: models between staging and final models, always built on staging models
-- Fact: things that are occurring or have ocurred like events, clicks, votes
-- Dimention: people, place, or thing, users, companies, customers
+- **Sources**(src): The raw data that has already been loaded
+- **Staging**(stg): These have a one-to-one relationship with sources tables.These models are used to clean and standardize the data before transforming data downstream like renaming columns.These are typically materialized as views.
+- **Intermediate**(int): Models between staging and final models. These should be built on staging models rather than directly on sources to leverage the data cleaning that was done in staging.
+- **Fact**(fct): Model refers to the data that represent things that are occurring or have ocurred like events, clicks, votes, orders, transactions etc. 
+- **Dimention**(dim): refers to data that represents a person, place or thing. Examples include customers, products, candidates, buildings, employees.
 
 ![image](https://user-images.githubusercontent.com/19702456/221659290-f5dd8eee-355f-479c-b6cc-88bb2cc5c95e.png)
 
@@ -388,6 +388,7 @@ Preset
   dbt init <project name>
   dbt debug # run from the project directory 
   dbt run --full-refresh
+  dbt run -s staging # will run all models that exist in models/staging.
   dbt seed [-s filename] # upload seed
   dbt compile 
   dbt source freshness
