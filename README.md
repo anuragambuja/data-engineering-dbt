@@ -30,10 +30,12 @@ dbt
 
 > ##  Models
 
-- Models are the basic building block of your business logic
-- Materialized as tables, views, etc…
-- They live in SQL files in the `models` folder
+- Models are .sql files that live in the `models` folder and are simply written as select statements - there is no DDL/DML that needs to be written around this. 
 - Models can reference each other and use templates and macros
+- After constructing a model, `dbt run` in the command line will actually materialize the models into the data warehouse. The default materialization is a view.
+- The materialization can be configured as a table with the following configuration block at the top of the model file:
+- When dbt run is executing, dbt is wrapping the select statement in the correct DDL/DML to build that model as a table/view. If that model already exists in the data warehouse, dbt will automatically drop that table or view before building the new database object. *Note: If you are on BigQuery, you may need to run dbt run --full-refresh for this to take effect.
+- The DDL/DML that is being run to build each model can be viewed in the logs through the cloud interface or the target folder.
 
 Here's an example dbt model:
 ```sql
@@ -70,15 +72,7 @@ with customers as (
 
 ![image](https://user-images.githubusercontent.com/19702456/219865450-6061d1c7-cff2-4075-b201-dc411f5bee03.png)
 
-### ways to define materialization
-1. Inside Model's sql files
-```sql
-{{
-    config(materialized='table')
-}}
-
-```
-2. 0r, Inside dbt_project.yml
+Other than defining at the top inside model files, the default materilization can also be defined inside `dbt_project.yml`
 ```yml 
 models:
   jaffle_shop: # project name
