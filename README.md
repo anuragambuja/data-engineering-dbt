@@ -169,28 +169,84 @@ FROM {{ ref('taxi_zone_lookup) }}
 - Check: Any change in a set of columns (or all columns) will be picked up as an update.
 
 > ## Tests
+In dbt, tests are written as select statements. These select statements are run against your materialized models to ensure they meet your assertions.
 There are two types of tests: singular and generic
-- Singular tests are SQL queries stored in tests which are expected to return an empty resultset
-- Generic Tests are pre defined tests which can be added to a yml file. There are four built-in generic tests:
-    - unique
-    - not_null
-    - accepted_values
-    - Relationships
+- Singular tests are SQL queries stored in `tests` folder which are expected to return an empty resultset. You associate a singular test with a particular dbt model or source using the `ref` or `source` macro in the SQL query in the singular test file
+- Generic tests are written in YAML and return the number of records that do not meet your assertions. These are run on specific columns in a model. There are four built-in generic tests:
+   - **Unique** tests to see if every value in a column is unique
+   - **Not_null** tests to see if every value in a column is not null
+   - **Accepted_values** tests to make sure every value in a column is equal to a value in a provided list
+   - **Relationships** tests to ensure that every value in a column exists in a column in another model
 - You can define your own custom generic tests or import tests from dbt packages
 
 ```yaml
 models:
-  - name: stg_yellow_tripdata
-    description: >
-        Trips made by New York City's iconic yellow taxis. 
-    columns:
-        - name: tripid
-        description: Primary key for this table, generated with a concatenation of vendorid+pickup_datetime
+  - name: stg_customers
+    columns: 
+      - name: customer_id
         tests:
-            - unique:
-                severity: warn
-            - not_null:
-                severrity: warn
+          - unique
+               severity: warn
+          - not_null
+               severity: warn
+
+  - name: stg_orders
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+      - name: status
+        tests:
+          - accepted_values:
+              values:
+                - completed
+                - shipped
+                - returned
+                - return_pending
+                - placed                
+```
+```bash 
+dbt test --select stg_customers
+``
+```yml
+sources:
+  - name: jaffle_shop
+    database: raw
+    schema: jaffle_shop
+    tables:
+      - name: customers
+        columns:
+          - name: id
+            tests:
+              - unique
+              - not_null
+          - name: customer_id
+            tests:
+               - relationships:
+                    to: ref('stg_customers')
+                    field: customer_id
+            
+      - name: orders
+        columns:
+          - name: id
+            tests:
+              - unique              
+              - not_null
+        loaded_at_field: _etl_loaded_at
+        freshness:
+          warn_after: {count: 12, period: hour}
+          error_after: {count: 24, period: hour}
+
+```
+```bash
+dbt test --select source:jaffle_shop
+```
+```bash
+dbt test runs all tests in the dbt project
+dbt test --select test_type:generic
+dbt test --select test_type:singular
+dbt test --select one_specific_model
 ```
 
 > ## Macros
