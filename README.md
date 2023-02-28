@@ -60,7 +60,7 @@ with customers as (
 
 *Note: You will see logs and target if after you run dbt run for the first time. You will not see dbt_modules if you have not imported a package yet
 
-> ## Materializations
+`Materializations`
 
  * The `table` strategy means that the model will be rebuilt as a table on each run.
  * We could use a `view` strategy instead, which would rebuild the model on each run as a SQL view.
@@ -69,6 +69,23 @@ with customers as (
  * You can learn more about materialization strategies with dbt [in this link](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/materializations). Besides the 4 common `table`, `view`, `incremental` and `ephemeral` strategies, custom strategies can be defined for advanced cases.
 
 ![image](https://user-images.githubusercontent.com/19702456/219865450-6061d1c7-cff2-4075-b201-dc411f5bee03.png)
+
+### ways to define materialization
+1. Inside Model's sql files
+```sql
+{{
+    config(materialized='table')
+}}
+
+```
+2. 0r, Inside dbt_project.yml
+```yml 
+models:
+  jaffle_shop: # project name
+  ...
+    marts: # model folder 
+      +materialized: table
+```
 
 > ## Sources and Seeds
 
