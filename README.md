@@ -107,24 +107,28 @@ Here's an example of how you would declare a source in a `.yml` file:
 
 ```yaml
 sources:
-    - name: staging
-      database: production
-      schema: trips_data_all
+    - name: jaffle_shop
+      database: raw
+      schema: data_science
 
-      loaded_at_field: record_loaded_at
+      
       tables:
-        - name: green_tripdata
-        - name: yellow_tripdata
+        - name: customers
+        - name: orders
+          loaded_at_field: record_loaded_at  # used for freshness
           freshness:
-            error_after: {count: 6, period: hour}
+            warn_after: {count: 12, period: hour}
+            error_after: {count: 24, period: hour}
 ```
 
 And here's how you would reference a source in a `FROM` clause:
 
 ```sql
-FROM {{ source('staging','yellow_tripdata') }}
+FROM {{ source('name','table_name') }}
 ```
 * The first argument of the `source()` function is the source name, and the second is the table name.
+
+Run `dbt source freshness`
 
 In the case of seeds, assuming you've got a `taxi_zone_lookup.csv` file in your `seeds` folder which contains `locationid`, `borough`, `zone` and `service_zone`:
 
@@ -389,6 +393,7 @@ Preset
   dbt debug # run from the project directory 
   dbt run --full-refresh
   dbt run -s staging # will run all models that exist in models/staging.
+  dbt run --select dim_customers+ # only materialize dim_customers and its downstream models
   dbt seed [-s filename] # upload seed
   dbt compile 
   dbt source freshness
