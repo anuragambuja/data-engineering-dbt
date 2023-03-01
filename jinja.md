@@ -72,9 +72,6 @@ Today I want chocolate ice cream!
 Today I want mango sorbet!
 ```
 We can control for whitespace by adding a single dash on either side of the Jinja delimiter. This will trim the whitespace between the Jinja delimiter on that side of the expression.
-```jinja
-
-```
 
 
 
