@@ -503,9 +503,8 @@ Preset
 ```bash
   dbt init <project name>
   dbt debug # run from the project directory 
-  dbt run --full-refresh
-  dbt run -s staging # will run all models that exist in models/staging.
-  dbt run --select dim_customers+ # only materialize dim_customers and its downstream models
+  
+
   dbt seed [-s filename] # upload seed
   dbt compile 
   dbt source freshness
@@ -518,6 +517,20 @@ Preset
  
 Project configurations: dbt_project.yml
 Profile configurations: ~/.dbt/profiles.yml
+```
+```bash
+$ dbt run --select my_dbt_project_name   # runs all models in your project
+$ dbt run --select my_dbt_model          # runs a specific model
+$ dbt run --select path.to.my.models     # runs all models in a specific directory
+$ dbt run --select my_package.some_model # run a specific model in a specific package
+$ dbt run --select tag:nightly           # run models with the "nightly" tag
+$ dbt run --select path/to/models        # run models contained in path/to/models
+$ dbt run --select path/to/my_model.sql  # run a specific model by its path
+$ dbt run --select my_first_model my_second_model # multiple arguments can be provided to --select
+$ dbt run --select tag:nightly my_model finance.base.* # these arguments can be projects, models, directory paths, tags, or sources
+$ dbt run --select path:marts/finance,tag:nightly,config.materialized:table # use methods and intersections for more complex selectors
+$ dbt run --select country_codes+ # run all models downstream of country_codes
+$ dbt run --full-refresh # dbt will treat incremental models as table models. This is useful when there is schema or logic change in the incremental model.
 ```
 
 > ## VS Code Extension: 
