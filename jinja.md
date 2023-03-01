@@ -1,8 +1,9 @@
-##Jinja 
+# Jinja 
 
 Jinja a templating language written in the python programming language. Jinja is used in dbt to write functional SQL. For example, we can write a dynamic pivot model using Jinja.
 
-Jinja Basics
+>Jinja Basics
+
 The best place to learn about leveraging Jinja is the Jinja Template Designer documentation.
 
 There are three Jinja delimiters to be aware of in Jinja.
