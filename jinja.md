@@ -73,7 +73,10 @@ Today I want mango sorbet!
 ```
 We can control for whitespace by adding a single dash on either side of the Jinja delimiter. This will trim the whitespace between the Jinja delimiter on that side of the expression.
 
+> Refrences
 
+- [Jinja Template Designer Documentation](https://jinja.palletsprojects.com/en/3.1.x/templates/)
+- [Jinja Live Parser](http://jinja.quantprogramming.com/)
 
 
 
