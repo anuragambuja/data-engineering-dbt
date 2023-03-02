@@ -323,6 +323,24 @@ where vendorid is not null
 ```
 * The macro is replaced by the code contained within the macro definition as well as any variables that we may have passed to the macro parameters.
 
+#### Macro to grant access to role on the schema 
+```yaml
+{% macro grant_select(schema=target.schema, role=target.role) %}
+
+  {% set sql %} # set the name 
+  grant usage on schema {{ schema }} to role {{ role }};
+  grant select on all tables in schema {{ schema }} to role {{ role }};
+  grant select on all views in schema {{ schema }} to role {{ role }};
+  {% endset %}
+
+  {{ log('Granting select on all tables and views in schema ' ~ target.schema ~ ' to role ' ~ role, info=True) }}
+  {% do run_query(sql) %}
+  {{ log('Privileges granted', info=True) }}
+
+{% endmacro %}
+```
+```dbt run-operation grant_select`
+
 > ## Documentation
 - Documentations can be defined two ways:
     - In yaml files (like schema.yml)
