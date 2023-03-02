@@ -324,7 +324,7 @@ where vendorid is not null
 * The macro is replaced by the code contained within the macro definition as well as any variables that we may have passed to the macro parameters.
 
 #### Macro to grant access to role on the schema 
-```yaml
+```sql
 {% macro grant_select(schema=target.schema, role=target.role) %}
 
   {% set sql %} # set the name 
@@ -343,7 +343,7 @@ where vendorid is not null
 `dbt run-operation grant_select`
 
 
-```yaml
+```sql
 # union_tables_by_prefix macro code:
 {%- macro union_tables_by_prefix(database, schema, prefix) -%}
 
@@ -364,15 +364,54 @@ where vendorid is not null
 
 # union_tables_by_orders_prefix model code:
 {{ union_tables_by_prefix(
-
       database='raw',
       schema='dbt_learn_jinja', 
       prefix='orders__'
-        
       )
 }}
 ```
 
+```sql
+# clean_stale_models macro code:
+{#  
+    -- let's develop a macro that 
+    1. queries the information schema of a database
+    2. finds objects that are > 1 week old (no longer maintained)
+    3. generates automated drop statements
+    4. has the ability to execute those drop statements
+
+#}
+
+{% macro clean_stale_models(database=target.database, schema=target.schema, days=7, dry_run=True) %}
+    
+    {% set get_drop_commands_query %}
+        select
+            case 
+                when table_type = 'VIEW'
+                    then table_type
+                else 
+                    'TABLE'
+            end as drop_type, 
+            'DROP ' || drop_type || ' {{ database | upper }}.' || table_schema || '.' || table_name || ';'
+        from {{ database }}.information_schema.tables 
+        where table_schema = upper('{{ schema }}')
+        and last_altered <= current_date - {{ days }} 
+    {% endset %}
+
+    {{ log('\nGenerating cleanup queries...\n', info=True) }}
+    {% set drop_queries = run_query(get_drop_commands_query).columns[1].values() %}
+
+    {% for query in drop_queries %}
+        {% if dry_run %}
+            {{ log(query, info=True) }}
+        {% else %}
+            {{ log('Dropping object with command: ' ~ query, info=True) }}
+            {% do run_query(query) %} 
+        {% endif %}       
+    {% endfor %}
+    
+{% endmacro %} 
+```
 
 
 > ## Documentation
