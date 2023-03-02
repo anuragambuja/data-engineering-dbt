@@ -323,8 +323,9 @@ where vendorid is not null
 ```
 * The macro is replaced by the code contained within the macro definition as well as any variables that we may have passed to the macro parameters.
 
-#### Macro to grant access to role on the schema 
+
 ```sql
+# Based on your environment, grant select to your role or user (depending on your data platform)
 {% macro grant_select(schema=target.schema, role=target.role) %}
 
   {% set sql %} # set the name 
