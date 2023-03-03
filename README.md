@@ -67,8 +67,10 @@ with customers as (
  * The `table` strategy means that the model will be rebuilt as a table on each run.
  * We could use a `view` strategy instead, which would rebuild the model on each run as a SQL view.
  * The `incremental` strategy is essentially a `table` strategy but it allows us to add or update records incrementally rather than rebuilding the complete table on each run.
- * The `ephemeral` strategy creates a _[Common Table Expression](https://www.essentialsql.com/introduction-common-table-expressions-ctes/)_ (CTE).
- * You can learn more about materialization strategies with dbt [in this link](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/materializations). Besides the 4 common `table`, `view`, `incremental` and `ephemeral` strategies, custom strategies can be defined for advanced cases.
+ * The `ephemeral` strategy creates a _[Common Table Expression](https://www.essentialsql.com/introduction-common-table-expressions-ctes/)_ (CTE). It does not exist in the database and are imported as CTE into downstream models. It increases build time of downstream models and you cannot query directly.
+ * The `incrementa` strategy builds the entire table on the first run but only appends records on subsequent runs. It is faster to build because you are only adding new records and does not capture 100% of the data all the time.
+ You can learn more about materialization strategies with dbt [in this link](https://docs.getdbt.com/docs/building-a-dbt-project/building-models/materializations). 
+ Besides the 4 common `table`, `view`, `incremental` and `ephemeral` strategies, custom strategies can be defined for advanced cases.
 
 ![image](https://user-images.githubusercontent.com/19702456/219865450-6061d1c7-cff2-4075-b201-dc411f5bee03.png)
 
@@ -164,9 +166,14 @@ SELECT
 FROM {{ ref('taxi_zone_lookup) }}
 ```
 
-> ## Snapshots
+> ## Snapshots 
+- Built as a table in the database, usually in a dedicated schema.
+- On the first run, builds entire table and adds four columns: dbt_scd_id, dbt_updated_at, dbt_valid_from, and dbt_valid_to
+- In future runs, dbt will scan the underlying data and append new records based on the configuration that is made.
+- This allows you to capture historical data
 - Timestamp: A unique key and an updated_at field is defined on the source model. These columns are used for determining changes.
 - Check: Any change in a set of columns (or all columns) will be picked up as an update.
+- [Snapshots Documentation](https://docs.getdbt.com/docs/building-a-dbt-project/snapshots)
 
 > ## Tests
 In dbt, tests are written as select statements. These select statements are run against your materialized models to ensure they meet your assertions.
