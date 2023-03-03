@@ -555,6 +555,11 @@ Variables can be used with the `var()` macro. For example:
 * In this example, the default value for `is_test_run` is `true`; in the absence of a variable definition either on the `dbt_project.yml` file or when running the project, then `is_test_run` would be `true`.
 * Since we passed the value `false` when runnning `dbt build`, then the `if` statement would evaluate to `false` and the code within would not run.
 
+> ## Analyses
+- Analyses are .sql files that live in the `analyses` folder.
+- Analyses will not be run with dbt run like models. However, you can still compile these from Jinja-SQL to pure SQL using dbt compile. These will compile to the target folder.
+- Analyses are useful for training queries, one-off queries, and audits
+
 
 > ## Deployment
 
