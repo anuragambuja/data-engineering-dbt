@@ -23,6 +23,9 @@ dbt has 2 main components: _dbt Core_ and _dbt Cloud_:
 
 > ## dbt installation
 
+- If you are new to dbt, create a new account with a 14 day free trial at cloud.getdbt.com.
+- If you prefer to develop locally using the dbt Core, checkout the docs page for getting started with dbt Core locally: [Installing dbt Core locally](https://docs.getdbt.com/docs/get-started/installation)
+
 ```
 pip install dbt-snowflake==1.2.0
 dbt
